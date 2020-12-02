@@ -4,9 +4,18 @@ import Formulaire from'./components/Formulaire'
 import Message from'./components/Message'
 
 
-
+// FIREBASE
+import base from './base'
 
 class App extends Component {
+
+  componentDidMount () {
+    base.syncState('/', {
+      context:this,
+      state:'messages'
+    })
+  
+  }
 
  state = {
    messages: {},
@@ -19,6 +28,8 @@ class App extends Component {
   this.setState({messages})
 
  }
+
+ isUser = pseudo => pseudo === this.state.pseudo
   
   render () {
    
@@ -26,6 +37,7 @@ class App extends Component {
       .keys(this.state.messages)
       .map(key => (
         <Message
+        isUser = {this.isUser}
         key={key}
         message={this.state.messages[key].message}
         pseudo={this.state.messages[key].pseudo}
